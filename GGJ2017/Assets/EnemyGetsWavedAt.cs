@@ -25,4 +25,9 @@ public class EnemyGetsWavedAt : MonoBehaviour {
         isBeingWavedAt = true;
     }
 
+    public bool IsBeingWavedAt()
+    {
+        return isBeingWavedAt;
+    }
+
 }
