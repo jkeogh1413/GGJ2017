@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour {
 	bool done = false;
     bool isWalking = false;
 
+    private RoundManager roundManager;
     private EnemyGetsWavedAt getsWavedAtBehavior;
 
 	// Use this for initialization
@@ -17,6 +18,8 @@ public class EnemyController : MonoBehaviour {
 
 		waypoints = transform.parent.parent.FindChild ("Waypoints");
         getsWavedAtBehavior = GetComponent<EnemyGetsWavedAt>();
+        GameObject roundManagerGO = GameObject.Find("RoundManager");
+        roundManager = roundManagerGO.GetComponent<RoundManager>();
 	}
 
 	// Update is called once per frame
@@ -27,6 +30,7 @@ public class EnemyController : MonoBehaviour {
         } else if (transform.position.y > 4f || transform.position.y < -1f) {
 			Destroy (gameObject, 5f);
 			done = true;
+            roundManager.DudeDied();
 		} else if (!done) {
 			Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
 			transform.LookAt (curWaypointTransform);
