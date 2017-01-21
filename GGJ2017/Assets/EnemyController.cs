@@ -6,6 +6,7 @@ public class EnemyController : MonoBehaviour {
 
 	int curWaypoint = 1;
 	float walkSpeed = 1.5f;
+	bool done = false;
 
 	// Use this for initialization
 	void Start () {
@@ -16,13 +17,18 @@ public class EnemyController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
-		transform.LookAt(curWaypointTransform);
-		transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
+		if (transform.position.y > 4f || transform.position.y < -1f) {
+			Destroy (gameObject, 5f);
+			done = true;
+		} else if (!done) {
+			Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
+			transform.LookAt (curWaypointTransform);
+			transform.Translate (Vector3.forward * walkSpeed * Time.deltaTime);
 
-		if (Vector3.Distance (transform.position, curWaypointTransform.position) < 0.1f) {
-			if (curWaypoint < waypoints.childCount) {
-				curWaypoint++;
+			if (Vector3.Distance (transform.position, curWaypointTransform.position) < 0.1f) {
+				if (curWaypoint < waypoints.childCount) {
+					curWaypoint++;
+				}
 			}
 		}
 	}
