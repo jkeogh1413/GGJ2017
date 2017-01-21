@@ -19,7 +19,6 @@ public class PathController : MonoBehaviour {
 	void Update () {
 		Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
 		foreach (Transform enemy in enemies) {
-			//enemy.position = Vector3.Lerp (enemy.position, curWaypointTransform.position, 0.5f * Time.deltaTime);
 			enemy.LookAt(curWaypointTransform);
 			enemy.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
 		}
