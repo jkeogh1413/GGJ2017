@@ -17,6 +17,10 @@ public class PlayerWaveAtBehavior : MonoBehaviour {
     void Update()
     {
         waving = AreWeWaving();
+        if (waving)
+        {
+            Debug.Log("Waving...");
+        }
     }
 
     private void OnTriggerStay(Collider other)
