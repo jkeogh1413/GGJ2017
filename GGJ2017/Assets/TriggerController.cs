@@ -9,7 +9,7 @@ public class TriggerController : MonoBehaviour {
 	private bool forceTrapButtonPressed = false;
 
 	void Start() {
-		triggerRB = GameObject.Find("ForceTrap").GetComponent<Rigidbody> ();
+		triggerRB = gameObject.GetComponent<Rigidbody> ();
 	}
 
 	void OnTriggerStay(Collider col) {
