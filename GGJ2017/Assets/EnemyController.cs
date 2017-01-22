@@ -30,6 +30,10 @@ public class EnemyController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (done) {
+			return;
+		}
+
         if (getsWavedAtBehavior.IsBeingWavedAt())
         {
 			transform.LookAt (player);
@@ -41,16 +45,16 @@ public class EnemyController : MonoBehaviour {
 				state = "happy2";
 				//triggerSound (state);
 			}
-		} else if (transform.position.y > 4f) {
+		} else if (transform.position.y > 2.5f) {
 			Destroy (gameObject, 5f);
-			//triggerSound ("flying");
+			triggerSound ("flying");
 			done = true;
             roundManager.DudeDied();
 		} else if (transform.position.y < 1f) {
 			//triggerSound ("drowning");
 			done = true;
 			roundManager.DudeDied();
-		} else if (!done) {
+		} else {
 			Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
 			transform.LookAt (curWaypointTransform);
 			transform.Translate (Vector3.forward * walkSpeed * Time.deltaTime);
