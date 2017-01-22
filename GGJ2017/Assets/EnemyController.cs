@@ -8,11 +8,9 @@ public class EnemyController : MonoBehaviour {
 	int curWaypoint = 1;
 	float walkSpeed = 1.5f;
 	bool done = false;
-    bool isWalking = false;
 
 	public string state = "neutral";
-	private bool hasBeenHappy = false;
-	private bool hasBeenSad = false;
+    private string previousState;
 
     private RoundManager roundManager;
     private EnemyGetsWavedAt getsWavedAtBehavior;
@@ -34,12 +32,11 @@ public class EnemyController : MonoBehaviour {
         animator.SetTrigger("startWalking");
         GameObject g = animator.gameObject;
         AnimatorStateInfo asi = animator.GetCurrentAnimatorStateInfo(0);
-        int x = 0;
 
 		enemyAudio = GetComponent<AudioSource> ();
 		enemyAudio.enabled = true;
 
-		triggerSound ("neutral");
+        SetState("neutral");
 	}
 
 	// Update is called once per frame
@@ -52,22 +49,19 @@ public class EnemyController : MonoBehaviour {
         {
             animator.SetTrigger("startWaving");
             transform.LookAt (player);
-			if (!hasBeenHappy) {
-				state = "happy1";
-				triggerSound (state);
-				hasBeenHappy = true;
-			} else if (hasBeenSad) {
-				state = "happy2";
-				triggerSound (state);
+			if (state == "neutral") {
+				SetState("happy1");
+			} else if (state == "sad1" || state == "sad2") {
+				SetState("happy2");
 			}
 		} else if (transform.position.y > 2.5f) {
             animator.SetTrigger("die");
 			Destroy (gameObject, 5f);
-			triggerSound ("flying");
+			SetState("flying");
 			done = true;
             roundManager.DudeDied();
 		} else if (transform.position.y < 1f) {
-			triggerSound ("drowning");
+			SetState("drowning");
 			done = true;
 			roundManager.DudeDied();
 		} else
@@ -77,12 +71,10 @@ public class EnemyController : MonoBehaviour {
 			transform.LookAt (curWaypointTransform);
 			transform.Translate (Vector3.forward * walkSpeed * Time.deltaTime);
 
-			if (hasBeenHappy && hasBeenSad) {
-				state = "sad2";
-				triggerSound (state);
-			} else if (hasBeenHappy) {
-				state = "sad1";
-				triggerSound (state);
+			if (state == "happy2") {
+				SetState("sad2");
+			} else if (state == "happy1") {
+				SetState("sad1");
 			}
 
 			if (Vector3.Distance (transform.position, curWaypointTransform.position) < 0.1f) {
@@ -91,7 +83,40 @@ public class EnemyController : MonoBehaviour {
 				}
 			}
 		}
+        Debug.Log(gameObject.GetHashCode() + " state is " + state);
 	}
+
+    void SetState(string newState)
+    {
+        state = newState;
+        if (state != previousState)
+        {
+            switch(state)
+            {
+                case "neutral":
+                    triggerSound("neutral");
+                    break;
+                case "happy1":
+                    triggerSound(state);
+                    break;
+                case "sad1":
+                    triggerSound(state);
+                    break;
+                case "happy2":
+                    triggerSound(state);
+                    break;
+                case "sad2":
+                    triggerSound(state);
+                    break;
+                case "flying":
+                    triggerSound(state);
+                    break;
+                case "drowning":
+                    triggerSound(state);
+                    break;
+            }
+        }
+    }
 
 	public void triggerSound(string category) {
 
@@ -100,7 +125,7 @@ public class EnemyController : MonoBehaviour {
 
 		enemyAudio = GetComponent<AudioSource> ();
 		enemyAudio.enabled = true;
-		enemyAudio.clip = audioSource.clip;
-		enemyAudio.Play ();
-	}
+        enemyAudio.clip = audioSource.clip;
+        enemyAudio.Play();
+    }
 }

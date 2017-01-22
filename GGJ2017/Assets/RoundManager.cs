@@ -8,19 +8,13 @@ public class RoundManager : MonoBehaviour
 
     public RoundConfig[] roundConfigs;
 
-    private int currentRoundNumber = 0;
+    private int currentRoundNumber = -1;
     private RoundConfig currentRound;
     private int activeCount = 0;
     private Spawn[] spawnPoints;
     private int spawnCount;
     private float spawnDelay;
     private float nextSpawnAt = 0;
-
-    // Use this for initialization
-    void LateStart () {
-        // start immediately for now
-        StartRound(0);
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -49,6 +43,7 @@ public class RoundManager : MonoBehaviour
 
     void StartRound (int roundNumber)
     {
+        Debug.Log("Starting round " + roundNumber);
         currentRoundNumber = roundNumber;
         currentRound = roundConfigs[currentRoundNumber];
         spawnPoints = currentRound.spawnPoints;
