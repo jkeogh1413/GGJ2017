@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class RoundManager : MonoBehaviour
 {
 
     public RoundConfig[] roundConfigs;
+    public Text roundText;
 
     private int currentRoundNumber = -1;
     private RoundConfig currentRound;
@@ -30,6 +32,8 @@ public class RoundManager : MonoBehaviour
 		if (!gameStarted) {
 			return;
 		}
+
+        roundText.text = "Wave " + (currentRoundNumber + 1);
 
         if (spawnCount > 0)
         {
