@@ -15,9 +15,22 @@ public class RoundManager : MonoBehaviour
     private int spawnCount;
     private float spawnDelay;
     private float nextSpawnAt = 0;
+
+	private bool gameStarted = false;
+
+	private Transform sun;
+
+	void Start() {
+		sun = GameObject.Find ("Environment").transform.FindChild ("SUN");
+		StartCoroutine (StartWarmup ());
+	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (!gameStarted) {
+			return;
+		}
+
         if (spawnCount > 0)
         {
             if (Time.time >= nextSpawnAt)
@@ -43,6 +56,7 @@ public class RoundManager : MonoBehaviour
 
     void StartRound (int roundNumber)
     {
+		gameStarted = true;
         Debug.Log("Starting round " + roundNumber);
         currentRoundNumber = roundNumber;
         currentRound = roundConfigs[currentRoundNumber];
@@ -51,6 +65,39 @@ public class RoundManager : MonoBehaviour
         spawnDelay = currentRound.spawnDelay;
         nextSpawnAt = Time.time;
     }
+		
+	void Reset() {
+		gameStarted = false;
+		activeCount = 0;
+		currentRoundNumber = -1;
+		spawnCount = 0;
+		currentRound = null;
+
+		StartRound (0);
+	}
+
+	IEnumerator StartWarmup() {
+		sun.GetComponent<AudioSource> ().Play ();
+		yield return new WaitForSeconds(12f);  //audiosource length?
+		StartRound(0);
+	}
+
+	public void GameOver() {
+		// enemy noses
+		// show Game Over and reset buttons
+		sun.FindChild("as2").GetComponent<AudioSource> ().Play();
+
+		StartCoroutine(scaleSun());
+		return;
+	}
+
+	IEnumerator scaleSun() {
+		float scaleFactor = 1f;
+		for (int i = 0; i < 1000; i++) {
+			sun.localScale += Vector3.one * scaleFactor;
+			yield return 0;
+		}
+	}
 
     void SpawnADude ()
     {

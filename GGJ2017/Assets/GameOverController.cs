@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameOverController : MonoBehaviour {
 	void OnTriggerEnter(Collider col) {
 		if (col.tag == "Enemy") {
-			Debug.Log ("Game Over!");
+			GameObject.Find ("RoundManager").GetComponent<RoundManager> ().GameOver ();
 		}
 	}
 }

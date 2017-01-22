@@ -21,6 +21,7 @@ public class TriggerController : MonoBehaviour {
 		if (col.gameObject.tag == "Enemy" && (Input.GetKeyDown(KeyCode.Space) || triggered)) {
 			// do the thing
 			Debug.Log("doing the thing");
+			col.gameObject.GetComponent<EnemyController> ().triggerSound ("collision");
 			col.gameObject.GetComponent<Rigidbody> ().AddExplosionForce(triggerForce, new Vector3(triggerRB.transform.position.x, triggerRB.transform.position.y - 0.5f, triggerRB.transform.position.z), 10f);
 		}
 	}
