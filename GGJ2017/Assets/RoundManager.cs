@@ -17,7 +17,7 @@ public class RoundManager : MonoBehaviour
     private float nextSpawnAt = 0;
 
     // Use this for initialization
-    void Start () {
+    void LateStart () {
         // start immediately for now
         StartRound(0);
 	}

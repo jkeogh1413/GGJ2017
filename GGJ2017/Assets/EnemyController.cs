@@ -18,8 +18,12 @@ public class EnemyController : MonoBehaviour {
     private EnemyGetsWavedAt getsWavedAtBehavior;
     public Animator animator;
 
+	public AudioSource enemyAudio;
+
+	private bool ready = false;
+
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		// Based on spawn, choose a path, and become child of Path.Enemies
 
 		waypoints = transform.parent.parent.FindChild ("Waypoints");
@@ -31,6 +35,11 @@ public class EnemyController : MonoBehaviour {
         GameObject g = animator.gameObject;
         AnimatorStateInfo asi = animator.GetCurrentAnimatorStateInfo(0);
         int x = 0;
+
+		enemyAudio = GetComponent<AudioSource> ();
+		enemyAudio.enabled = true;
+
+		triggerSound ("neutral");
 	}
 
 	// Update is called once per frame
@@ -45,11 +54,11 @@ public class EnemyController : MonoBehaviour {
             transform.LookAt (player);
 			if (!hasBeenHappy) {
 				state = "happy1";
-				//triggerSound (state);
+				triggerSound (state);
 				hasBeenHappy = true;
 			} else if (hasBeenSad) {
 				state = "happy2";
-				//triggerSound (state);
+				triggerSound (state);
 			}
 		} else if (transform.position.y > 2.5f) {
             animator.SetTrigger("die");
@@ -58,7 +67,7 @@ public class EnemyController : MonoBehaviour {
 			done = true;
             roundManager.DudeDied();
 		} else if (transform.position.y < 1f) {
-			//triggerSound ("drowning");
+			triggerSound ("drowning");
 			done = true;
 			roundManager.DudeDied();
 		} else
@@ -70,10 +79,10 @@ public class EnemyController : MonoBehaviour {
 
 			if (hasBeenHappy && hasBeenSad) {
 				state = "sad2";
-				//triggerSound (state);
+				triggerSound (state);
 			} else if (hasBeenHappy) {
 				state = "sad1";
-				//triggerSound (state);
+				triggerSound (state);
 			}
 
 			if (Vector3.Distance (transform.position, curWaypointTransform.position) < 0.1f) {
@@ -85,8 +94,13 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	public void triggerSound(string category) {
+
 		Transform soundGroup = GameObject.Find ("EnemyAudio").transform.FindChild (category [0].ToString ().ToUpper () + category.Substring (1));
 		AudioSource audioSource = soundGroup.GetChild (Random.Range (0, soundGroup.childCount)).GetComponent<AudioSource> ();
-		AudioSource.PlayClipAtPoint (audioSource.clip, transform.position);
+
+		enemyAudio = GetComponent<AudioSource> ();
+		enemyAudio.enabled = true;
+		enemyAudio.clip = audioSource.clip;
+		enemyAudio.Play ();
 	}
 }
