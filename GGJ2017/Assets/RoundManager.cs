@@ -91,7 +91,7 @@ public class RoundManager : MonoBehaviour
 		sun.FindChild("as2").GetComponent<AudioSource> ().Play();
 
 		StartCoroutine(scaleSun());
-		Invoke ("Reset", 15f);
+		//Invoke ("Reset", 15f);
 	}
 
 	IEnumerator scaleSun() {
