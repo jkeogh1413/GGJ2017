@@ -14,7 +14,7 @@ public class Spawn : MonoBehaviour {
 		int pathIndex = Random.Range(0, l);
 		Transform path = eligiblePath[pathIndex];
 		Instantiate (enemy, transform.position, transform.rotation, path.FindChild("Enemies"));
-	
+		//enemy.GetComponent<EnemyController> ().triggerSound ("neutral");
 	}
 
 }
