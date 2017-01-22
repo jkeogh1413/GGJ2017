@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour {
 
     private RoundManager roundManager;
     private EnemyGetsWavedAt getsWavedAtBehavior;
+    public Animator animator;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +27,10 @@ public class EnemyController : MonoBehaviour {
         getsWavedAtBehavior = GetComponent<EnemyGetsWavedAt>();
         GameObject roundManagerGO = GameObject.Find("RoundManager");
         roundManager = roundManagerGO.GetComponent<RoundManager>();
+        animator.SetTrigger("startWalking");
+        GameObject g = animator.gameObject;
+        AnimatorStateInfo asi = animator.GetCurrentAnimatorStateInfo(0);
+        int x = 0;
 	}
 
 	// Update is called once per frame
@@ -36,7 +41,8 @@ public class EnemyController : MonoBehaviour {
 
         if (getsWavedAtBehavior.IsBeingWavedAt())
         {
-			transform.LookAt (player);
+            animator.SetTrigger("startWaving");
+            transform.LookAt (player);
 			if (!hasBeenHappy) {
 				state = "happy1";
 				//triggerSound (state);
@@ -46,6 +52,7 @@ public class EnemyController : MonoBehaviour {
 				//triggerSound (state);
 			}
 		} else if (transform.position.y > 2.5f) {
+            animator.SetTrigger("die");
 			Destroy (gameObject, 5f);
 			triggerSound ("flying");
 			done = true;
@@ -54,8 +61,10 @@ public class EnemyController : MonoBehaviour {
 			//triggerSound ("drowning");
 			done = true;
 			roundManager.DudeDied();
-		} else {
-			Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
+		} else
+        {
+            animator.SetTrigger("startWalking");
+            Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
 			transform.LookAt (curWaypointTransform);
 			transform.Translate (Vector3.forward * walkSpeed * Time.deltaTime);
 
