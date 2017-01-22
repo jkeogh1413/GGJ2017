@@ -30,6 +30,7 @@ public class ButtonController : MonoBehaviour {
 			}
 			ready = false;
 			gameObject.GetComponent<Renderer> ().material = buttonOff;
+			//GameObject.Find ("springTrap").GetComponent<Animator> ();
 			StartCoroutine (Cooldown ());
 		}
 	}
