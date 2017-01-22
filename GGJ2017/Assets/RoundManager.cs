@@ -17,11 +17,13 @@ public class RoundManager : MonoBehaviour
     private float nextSpawnAt = 0;
 
 	private bool gameStarted = false;
+	private Vector3 originalSunScale;
 
 	private Transform sun;
 
 	void Start() {
 		sun = GameObject.Find ("Environment").transform.FindChild ("SUN");
+		originalSunScale = sun.localScale;
 		StartCoroutine (StartWarmup ());
 	}
 	
@@ -72,6 +74,7 @@ public class RoundManager : MonoBehaviour
 		currentRoundNumber = -1;
 		spawnCount = 0;
 		currentRound = null;
+		sun.localScale = originalSunScale;
 
 		StartRound (0);
 	}
@@ -88,7 +91,7 @@ public class RoundManager : MonoBehaviour
 		sun.FindChild("as2").GetComponent<AudioSource> ().Play();
 
 		StartCoroutine(scaleSun());
-		return;
+		Invoke ("Reset", 15f);
 	}
 
 	IEnumerator scaleSun() {
