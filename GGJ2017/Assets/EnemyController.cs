@@ -87,6 +87,6 @@ public class EnemyController : MonoBehaviour {
 	public void triggerSound(string category) {
 		Transform soundGroup = GameObject.Find ("EnemyAudio").transform.FindChild (category [0].ToString ().ToUpper () + category.Substring (1));
 		AudioSource audioSource = soundGroup.GetChild (Random.Range (0, soundGroup.childCount)).GetComponent<AudioSource> ();
-		audioSource.Play ();
+		AudioSource.PlayClipAtPoint (audioSource.clip, transform.position);
 	}
 }
