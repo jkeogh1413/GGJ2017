@@ -29,9 +29,6 @@ public class EnemyController : MonoBehaviour {
         getsWavedAtBehavior = GetComponent<EnemyGetsWavedAt>();
         GameObject roundManagerGO = GameObject.Find("RoundManager");
         roundManager = roundManagerGO.GetComponent<RoundManager>();
-        animator.SetTrigger("startWalking");
-        GameObject g = animator.gameObject;
-        AnimatorStateInfo asi = animator.GetCurrentAnimatorStateInfo(0);
 
 		enemyAudio = GetComponent<AudioSource> ();
 		enemyAudio.enabled = true;
@@ -47,7 +44,6 @@ public class EnemyController : MonoBehaviour {
 
         if (getsWavedAtBehavior.IsBeingWavedAt())
         {
-            animator.SetTrigger("startWaving");
             transform.LookAt (player);
 			if (state == "neutral") {
 				SetState("happy1");
@@ -55,7 +51,6 @@ public class EnemyController : MonoBehaviour {
 				SetState("happy2");
 			}
 		} else if (transform.position.y > 2.5f) {
-            animator.SetTrigger("die");
 			Destroy (gameObject, 5f);
 			SetState("flying");
 			done = true;
@@ -66,7 +61,6 @@ public class EnemyController : MonoBehaviour {
 			roundManager.DudeDied();
 		} else
         {
-            animator.SetTrigger("startWalking");
             Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
 			transform.LookAt (curWaypointTransform);
 			transform.Translate (Vector3.forward * walkSpeed * Time.deltaTime);
@@ -95,24 +89,38 @@ public class EnemyController : MonoBehaviour {
             {
                 case "neutral":
                     triggerSound("neutral");
+                    animator.SetTrigger("startWalking");
+                    animator.Play("walk");
                     break;
                 case "happy1":
                     triggerSound(state);
+                    animator.SetTrigger("startWaving");
+                    animator.Play("wave");
                     break;
                 case "sad1":
                     triggerSound(state);
+                    animator.SetTrigger("startWalking");
+                    animator.Play("walk");
                     break;
                 case "happy2":
                     triggerSound(state);
+                    animator.SetTrigger("startWaving");
+                    animator.Play("wave");
                     break;
                 case "sad2":
                     triggerSound(state);
+                    animator.SetTrigger("startWalking");
+                    animator.Play("walk");
                     break;
                 case "flying":
                     triggerSound(state);
+                    animator.SetTrigger("die");
+                    animator.Play("fetal");
                     break;
                 case "drowning":
                     triggerSound(state);
+                    animator.SetTrigger("die");
+                    animator.Play("fetal");
                     break;
             }
         }
