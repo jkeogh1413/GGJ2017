@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour {
 	Transform player;
 
 	int curWaypoint = 1;
-	float walkSpeed = 1.5f;
+	float walkSpeed = 1f;
 	bool done = false;
 
 	public string state = "neutral";
