@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour {
 
 	int curWaypoint = 1;
 	float walkSpeed = 1f;
-	bool done = false;
+	public bool done = false;
 
 	public string state = "neutral";
     private string previousState;
@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour {
 
 	public AudioSource enemyAudio;
 
-	private bool ready = false;
+	public bool ready = false;
 
 	// Use this for initialization
 	void Awake () {

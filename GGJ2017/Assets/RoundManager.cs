@@ -18,15 +18,17 @@ public class RoundManager : MonoBehaviour
     private float spawnDelay;
     private float nextSpawnAt = 0;
 
-	private bool gameStarted = false;
+	public bool gameStarted = false;
 	private Vector3 originalSunScale;
 
 	private Transform sun;
+	public bool shouldScaleSun = false;
+	bool resetting = false;
 
 	void Start() {
 		sun = GameObject.Find ("Environment").transform.FindChild ("SUN");
 		originalSunScale = sun.localScale;
-		StartCoroutine (StartWarmup ());
+		StartCoroutine (StartWarmup (12f));
 	}
 	
 	// Update is called once per frame
@@ -70,6 +72,7 @@ public class RoundManager : MonoBehaviour
         spawnCount = currentRound.spawnCount;
         spawnDelay = currentRound.spawnDelay;
         nextSpawnAt = Time.time;
+		shouldScaleSun = true;
     }
 		
 	void Reset() {
@@ -78,29 +81,40 @@ public class RoundManager : MonoBehaviour
 		currentRoundNumber = -1;
 		spawnCount = 0;
 		currentRound = null;
+		shouldScaleSun = false;
 		sun.localScale = originalSunScale;
+		sun.FindChild ("as2").GetComponent<AudioSource> ().Stop ();
 
-		StartRound (0);
+		foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
+			Destroy (enemy);
+		}
+
+		StartCoroutine (StartWarmup (3f));
 	}
 
-	IEnumerator StartWarmup() {
-		sun.GetComponent<AudioSource> ().Play ();
-		yield return new WaitForSeconds(12f);  //audiosource length?
+	IEnumerator StartWarmup(float warmupTime) {
+		if (warmupTime > 10f) {
+			sun.GetComponent<AudioSource> ().Play ();
+		}
+		yield return new WaitForSeconds(warmupTime);  //audiosource length?
 		StartRound(0);
 	}
 
 	public void GameOver() {
 		// enemy noses
 		// show Game Over and reset buttons
+		gameStarted = false;
 		sun.FindChild("as2").GetComponent<AudioSource> ().Play();
-
 		StartCoroutine(scaleSun());
-		//Invoke ("Reset", 15f);
+		Invoke ("Reset", 8f);
 	}
 
 	IEnumerator scaleSun() {
 		float scaleFactor = 1f;
 		for (int i = 0; i < 1000; i++) {
+			if (!shouldScaleSun) {
+				i = 1000;
+			}
 			sun.localScale += Vector3.one * scaleFactor;
 			yield return 0;
 		}
