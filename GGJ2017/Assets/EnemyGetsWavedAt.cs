@@ -15,7 +15,7 @@ public class EnemyGetsWavedAt : MonoBehaviour {
 	void FixedUpdate () {
         if (isBeingWavedAt)
         {
-            Debug.Log(gameObject.GetHashCode() + " likes being waved at.");
+            //Debug.Log(gameObject.GetHashCode() + " likes being waved at.");
         }
         isBeingWavedAt = false;
 	}

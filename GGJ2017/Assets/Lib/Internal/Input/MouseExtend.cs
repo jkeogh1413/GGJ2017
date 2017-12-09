@@ -14,7 +14,7 @@ public class MouseExtend : MonoBehaviour {
 	void Start() {
 		cam = GetComponentInChildren<Camera> ();
 
-		hand = cam.transform.FindChild ("Hand");
+		hand = cam.transform.Find ("Hand");
 	}
 
 	void extend () {

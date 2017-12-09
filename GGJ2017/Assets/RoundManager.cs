@@ -26,7 +26,7 @@ public class RoundManager : MonoBehaviour
 	bool resetting = false;
 
 	void Start() {
-		sun = GameObject.Find ("Environment").transform.FindChild ("SUN");
+		sun = GameObject.Find ("Environment").transform.Find ("SUN");
 		originalSunScale = sun.localScale;
 		StartCoroutine (StartWarmup (12f));
 	}
@@ -83,7 +83,7 @@ public class RoundManager : MonoBehaviour
 		currentRound = null;
 		shouldScaleSun = false;
 		sun.localScale = originalSunScale;
-		sun.FindChild ("as2").GetComponent<AudioSource> ().Stop ();
+		sun.Find ("as2").GetComponent<AudioSource> ().Stop ();
 
 		foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
 			Destroy (enemy);
@@ -104,7 +104,7 @@ public class RoundManager : MonoBehaviour
 		// enemy noses
 		// show Game Over and reset buttons
 		gameStarted = false;
-		sun.FindChild("as2").GetComponent<AudioSource> ().Play();
+		sun.Find("as2").GetComponent<AudioSource> ().Play();
 		StartCoroutine(scaleSun());
 		Invoke ("Reset", 8f);
 	}

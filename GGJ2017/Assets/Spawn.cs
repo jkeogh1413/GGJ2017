@@ -15,7 +15,7 @@ public class Spawn : MonoBehaviour {
 		int l = eligiblePath.Length;
 		int pathIndex = Random.Range(0, l);
 		Transform path = eligiblePath[pathIndex];
-		Instantiate (enemy, transform.position, transform.rotation, path.FindChild("Enemies"));
+		Instantiate (enemy, transform.position, transform.rotation, path.Find("Enemies"));
 	}
 
 }

@@ -24,7 +24,7 @@ public class EnemyController : MonoBehaviour {
 	void Awake () {
 		// Based on spawn, choose a path, and become child of Path.Enemies
 
-		waypoints = transform.parent.parent.FindChild ("Waypoints");
+		waypoints = transform.parent.parent.Find ("Waypoints");
 		player = GameObject.FindGameObjectWithTag ("Player").transform;
         getsWavedAtBehavior = GetComponent<EnemyGetsWavedAt>();
         GameObject roundManagerGO = GameObject.Find("RoundManager");
@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour {
 			roundManager.DudeDied();
 		} else
         {
-            Transform curWaypointTransform = waypoints.FindChild ("Waypoint" + curWaypoint.ToString ());
+            Transform curWaypointTransform = waypoints.Find ("Waypoint" + curWaypoint.ToString ());
 			transform.LookAt (curWaypointTransform);
 			transform.Translate (Vector3.forward * walkSpeed * Time.deltaTime);
 
@@ -77,7 +77,7 @@ public class EnemyController : MonoBehaviour {
 				}
 			}
 		}
-        Debug.Log(gameObject.GetHashCode() + " state is " + state);
+        //Debug.Log(gameObject.GetHashCode() + " state is " + state);
 	}
 
     void SetState(string newState)
@@ -128,7 +128,7 @@ public class EnemyController : MonoBehaviour {
 
 	public void triggerSound(string category) {
 
-		Transform soundGroup = GameObject.Find ("EnemyAudio").transform.FindChild (category [0].ToString ().ToUpper () + category.Substring (1));
+		Transform soundGroup = GameObject.Find ("EnemyAudio").transform.Find (category [0].ToString ().ToUpper () + category.Substring (1));
 		AudioSource audioSource = soundGroup.GetChild (Random.Range (0, soundGroup.childCount)).GetComponent<AudioSource> ();
 
 		enemyAudio = GetComponent<AudioSource> ();

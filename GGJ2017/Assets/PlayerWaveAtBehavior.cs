@@ -19,7 +19,7 @@ public class PlayerWaveAtBehavior : MonoBehaviour {
         waving = AreWeWaving();
         if (waving)
         {
-            Debug.Log("Waving...");
+            //Debug.Log("Waving...");
         }
     }
 
@@ -28,7 +28,7 @@ public class PlayerWaveAtBehavior : MonoBehaviour {
         EnemyGetsWavedAt egwa = other.GetComponent<EnemyGetsWavedAt>();
         if (waving && egwa)
         {
-            Debug.Log("Waving at " + other.GetHashCode());
+            //Debug.Log("Waving at " + other.GetHashCode());
             egwa.GetWavedAt();
         }
     }

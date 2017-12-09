@@ -14,7 +14,7 @@ public class ControllerWaveDetection : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        bool aboveHead = transform.position.y - head.position.y > 0;
+        bool aboveHead = transform.position.y - head.position.y > -0.2f;
         isWaving = aboveHead;
         Color debugColor = Color.white;
         if (isWaving)
